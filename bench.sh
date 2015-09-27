@@ -3,11 +3,8 @@
 # This script was put together in the hope that you would find it useful.
 # Rafa3d's, blackdotsh's and hidden refuge's scripts are licensed under GPLv2 and GPLv3 so this script goes under a GPLv3 license.
 # Use at your own risk. will not be liable for data loss, damages, loss of profits or any other kind of loss while using or misusing this script.
-
-
 clear
 sleep 2
-
 cpu=$( awk -F: '/model name/ {name=$2} END {print name}' /proc/cpuinfo )
 cores=$( awk -F: '/model name/ {core++} END {print core}' /proc/cpuinfo )
 corescache=$( awk -F: '/cache size/ {cache=$2} END {print cache}' /proc/cpuinfo )
@@ -16,15 +13,12 @@ tram=$( free -m | grep Mem | awk 'NR==1 {print $2}' )
 fram=$( free -m | grep Mem | awk 'NR==1 {print $4}' )
 tswap=$( free -m | grep Swap | awk 'NR==1 {print $2}' )
 fswap=$( free -m | grep Swap | awk 'NR==1 {print $4}' )
-hdd=$( df -h | grep ^/dev | awk 'NR==1 {print $2}' )
-hddfree=$( df -h | grep ^/dev | awk 'NR==1 {print $5}' )
 up=$(uptime|awk '{ $1=$2=$(NF-6)=$(NF-5)=$(NF-4)=$(NF-3)=$(NF-2)=$(NF-1)=$NF=""; print }' )
 hostname=$( uname -n )
 os=$( cat /etc/issue.net | awk 'NR==1 {print}' )
 kernel=$( uname -r )
 bits=$( uname -m )
 lbit=$( getconf LONG_BIT )
-
 printf "\n\n"
 printf "This is just a basic benchmark script\n"
 printf "This script will output info about your system\n"
@@ -36,32 +30,22 @@ printf "Script is based on (code used from) freevps bench, dacentec bench, Rafa3
 printf "Credits goes out to the original authors.\n"
 printf "Script uses sleep and clear, some may say it uses them both too much\n"
 printf "After all tests are done it will show them all as a final result\n"
-
-
 sleep 5
-
 printf ".\n"
 sleep 5
-
 printf "..\n"
 sleep 4
-
 printf "...\n"
 sleep 3
-
 printf "....\n"
 sleep 2
-
 printf ".....\n"
 sleep 1
-
 clear
-
 printf "\n\nCollecting some system information...\n"
 printf "Running one CPU Test\n"
 printf "Processing...\n"
 cputest=$( ( time echo "scale=5000; 4*a(1)" | bc -lq) 2>&1 | grep real |  cut -f2 )
-
 printf "\nDisk I/O Test\n"
 printf "Running three I/O tests\n"
 printf "Writing data to disk...\n"
@@ -73,7 +57,6 @@ ioraw2=$( echo $io2 | awk 'NR==1 {print $1}' )
 ioraw3=$( echo $io3 | awk 'NR==1 {print $1}' )
 ioall=$( awk 'BEGIN{print '$ioraw' + '$ioraw2' + '$ioraw3'}' )
 ioavg=$( awk 'BEGIN{print '$ioall'/3}' )
-
 printf "\n\n"
 printf "Hostname : $hostname\n"
 printf "System uptime : $up\n"
@@ -83,72 +66,50 @@ printf "CPU cache : $corescache\n"
 printf "CPU frequency : $freq MHz\n"
 printf "Total amount of RAM : $tram MB Free: $fram MB\n"
 printf "Total amount of swap : $tswap MB Free: $fswap MB\n"
-printf "Disk space : $hdd $hddfree % Used\n"
 printf "Operation System : $os\n"
 printf "32/64-Bits : $bits ($lbit Bit)\n"
 printf "Kernel : $kernel\n\n"
-
 sleep 10
-
 printf "Listing Memory Modules \n"
-
 memory=$( dmidecode --type 17 | grep -i "size\|locator\|type:\|speed\|manufacturer\|serial\|asset\|part" | sed 's/Size/\n &/g' )
 printf "$memory"
-
 sleep 10
-
-
 printf "\nListing HAL Info \n"
-
 if which hal-find-by-property >/dev/null; then
-
 udi=$(hal-find-by-property --key info.product --string Computer)
-
 mobomfg=$(hal-get-property --udi $udi --key system.board.vendor 2>/dev/null)
 if [ -z "$mobomfg" ]; then
 printf "Motherboard Manufacturer: $mobomfg\n"
-
 fi
 mobomodel=$(hal-get-property --udi $udi --key system.board.product 2>/dev/null)
 if [ -z "$mobomodel" ]; then
 printf "Model: $mobomodel\n"
 fi
-
 moboversion=$(hal-get-property --udi $udi --key system.board.version 2>/dev/null)
 if [ -z "$moboversion" ]; then
 printf "Version: $moboversion\n"
 fi
-
 moboserial=$(hal-get-property --udi $udi --key system.board.serial 2>/dev/null)
 if [ -z "$moboserial" ]; then
 printf "Serial No.: $moboserial\n"
 fi
-
 moborelease=$(hal-get-property --udi $udi --key system.firmware.release_date 2>/dev/null)
 if [ -z "$moborelease" ]; then
 printf "Release Date: $moborelease\n"
 fi
-
 mobofirmware=$(hal-get-property --udi $udi --key system.firmware.version 2>/dev/null)
 if [ -z "$mobofirmware" ]; then
 printf "Bios Version: $mobofirmware\n"
 fi
-
 mobouuid=$(hal-get-property --udi $udi --key system.hardware.uuid 2>/dev/null)
 if [ -z "$mobouuid" ]; then
 printf "Motherboard UUID: $mobouuid\n"
 fi
-
 sleep 5
-
 printf "\n\nDisk Listing\n"
-
  printf "VENDOR  -   MODEL   -    DEVICE  -   MOUNT  -   LABEL  -    SIZE \n"
-
 for udi in $(/usr/bin/hal-find-by-capability --capability storage)
-
 do
-
         unset vendor
         unset model
         unset device
@@ -163,38 +124,25 @@ do
         label=$(hal-get-property --udi $parent_udi --key volume.label)
         media_size=$(hal-get-property --udi $udi --key storage.removable.media_size)
         size=$((media_size / 10**9))
-
 if [ -z "$vendor" ]; then
     vendor="Vendor-N/A"
 fi
-
-
 if [ -z "$model" ]; then
     model="Model-N/A"
 fi
-
-
 if [ -z "$device" ]; then
     device="Device-N/A"
 fi
-
 if [ -z "$mount" ]; then
     mount="Mount-N/A"
 fi
-
 if [ -z "$label" ]; then
     label="Label-N/A"
 fi
-
    printf "\n $vendor - $model - $device - $mount -  $label -  "${size}GB" \n"
-
 done
-
 sleep 5
-
 printf "\n\nUSB Disks\n"
-
-
 for udi in $(/usr/bin/hal-find-by-capability --capability storage)
 do
 device=$(hal-get-property --udi $udi --key block.device)
@@ -210,11 +158,8 @@ size=$((media_size / 10**9))
 printf "$vendor $model $device $mount $label "${size}GB" \n"
 fi
 done
-
 sleep 5
-
 printf "\n\nCDROM Drives\n"
-
 for i in $(hal-find-by-property --key storage.drive_type --string cdrom)
 do
 printf "Manufacturer: $(hal-get-property --udi $i --key storage.vendor)\n"
@@ -222,29 +167,22 @@ printf "Model: $(hal-get-property --udi $i --key block.device)\n"
 printf "Bus: $(hal-get-property --udi $i --key storage.model)\n"
 printf "Path: $(hal-get-property --udi $i --key storage.bus)\n"
 done
-
 else
-
 printf "\n\nLinux HAL not found, skipping advanced hardware detection \n\n"
-
 fi
-
 sleep 10
-
 clear
 sleep 2
-
 printf "\n\n"
 printf "Time taken to generate PI to 5000 decimal places with a single thread: $cputest\n"
 printf "I/O speed #1: $io\n"
 printf "I/O speed #2: $io2\n"
 printf "I/O speed #3: $io3\n"
-printf "Average I/O speed : $ioavg MB\n"
+printf "Average I/O speed : $ioavg MB/s\n"
 printf "Network download tests\n"
 printf "a 100MB file is downloaded (to /dev/null) from each location, some locations may be dual-stack (IPv4/IPv6) which means if your side (system) is dual-stack it might use IPv6 for the speedtest\n"
 printf "Depending on your network connection this can take quite awhile!\n"
 printf "Downloading files...\n\n"
-
 cachefly=$( wget -O /dev/null http://cachefly.cachefly.net/100mb.test 2>&1 | awk '/\/dev\/null/ {speed=$3 $4} END {gsub(/\(|\)/,"",speed); print speed}' )
 echo "Download speed from CacheFly CDN: $cachefly "
 internode=$( wget -O /dev/null http://speedcheck.cdn.on.net/100meg.test 2>&1 | awk '/\/dev\/null/ {speed=$3 $4} END {gsub(/\(|\)/,"",speed); print speed}' )
@@ -372,14 +310,9 @@ echo "Download speed from OVH, Roubaix, France: $ovhfra "
 ovhcan=$( wget -O /dev/null http://bhs.proof.ovh.net/files/100Mio.dat 2>&1 | awk '/\/dev\/null/ {speed=$3 $4} END {gsub(/\(|\)/,"",speed); print speed}' )
 echo "Download speed from OVH, Beauharnois, Canada: $ovhcan "
 echo "-"
-
-
 sleep 10
-
 clear
-
 sleep 2
-
 printf "\n\n"
 printf "Hostname : $hostname\n"
 printf "System uptime : $up\n"
@@ -389,7 +322,6 @@ printf "CPU Cache : $corescache\n"
 printf "CPU frequency : $freq MHz\n"
 printf "Total amount of RAM : $tram MB Free: $fram MB\n"
 printf "Total amount of swap : $tswap MB Free: $fswap MB\n"
-printf "Disk space : $hdd $hddfree % Used\n"
 printf "Operation System : $os\n"
 printf "32/64-Bits : $bits ($lbit Bit)\n"
 printf "Kernel : $kernel\n"
@@ -399,7 +331,6 @@ printf "I/O speed #1: $io\n"
 printf "I/O speed #2: $io2\n"
 printf "I/O speed #3: $io3\n"
 printf "Average I/O speed : $ioavg MB/s\n\n"
-
 echo "-"
 echo "Download speed from CacheFly CDN: $cachefly "
 echo "Download speed from Internode CDN: $internode "
