@@ -17,7 +17,7 @@ up=$(uptime|awk '{ $1=$2=$(NF-6)=$(NF-5)=$(NF-4)=$(NF-3)=$(NF-2)=$(NF-1)=$NF="";
 hostname=$( uname -n )
 os=$( cat /etc/issue.net | awk 'NR==1 {print}' )
 kernel=$( uname -r )
-bits=$( uname -m )
+arch=$( uname -m )
 lbit=$( getconf LONG_BIT )
 printf "\n\n"
 printf "This is just a basic benchmark script\n"
@@ -67,7 +67,7 @@ printf "CPU frequency: $freq MHz\n"
 printf "Total amount of RAM: $tram MB Free: $fram MB\n"
 printf "Total amount of swap: $tswap MB Free: $fswap MB\n"
 printf "Operation System: $os\n"
-printf "32/64-Bits: $bits ($lbit Bit)\n"
+printf "32/64-Bits: $arch ($lbit Bit)\n"
 printf "Kernel: $kernel\n\n"
 sleep 10
 printf "Listing Memory Modules \n"
@@ -203,7 +203,7 @@ echo "Download speed from Softlayer, Singapore, Singapore: $slsg "
 echo "-"
 linodejp=$( wget -O /dev/null http://speedtest.tokyo.linode.com/100MB-tokyo.bin 2>&1 | awk '/\/dev\/null/ {speed=$3 $4} END {gsub(/\(|\)/,"",speed); print speed}' )
 echo "Download speed from Linode, Tokyo, Japan: $linodejp "
-leaseweb6=$( wget -O /dev/null http://43.249.37.9/hMINOJJhxH/100mb.bin 2>&1 | awk '/\/dev\/null/ {speed=$3 $4} END {gsub(/\(|\)/,"",speed); print speed}' )
+leaseweb6=$( wget -O /dev/null http://mirror.hk.leaseweb.net/speedtest/100mb.bin 2>&1 | awk '/\/dev\/null/ {speed=$3 $4} END {gsub(/\(|\)/,"",speed); print speed}' )
 echo "Download speed from Leaseweb, Hongkong, Hongkong: $leaseweb6 "
 echo "-"
 echo "Downloading from 3 London, UK sites"
@@ -324,7 +324,7 @@ printf "CPU frequency: $freq MHz\n"
 printf "Total amount of RAM: $tram MB Free: $fram MB\n"
 printf "Total amount of swap: $tswap MB Free: $fswap MB\n"
 printf "Operation System: $os\n"
-printf "32/64-Bits: $bits ($lbit Bit)\n"
+printf "32/64-Bits: $arch ($lbit Bit)\n"
 printf "Kernel: $kernel\n"
 echo "-"
 printf "Time taken to generate PI to 5000 decimal places with a single thread: $cputest\n"
