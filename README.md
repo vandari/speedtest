@@ -13,7 +13,7 @@ freevps's bench.sh - https://freevps.us/downloads/bench.sh
 
 Hidden Refuge's bench.sh https://github.com/hidden-refuge/bench-sh-2
 
-Sayem Chowdhury's bench.sh - http://serverreview.cf
+Sayem Chowdhury's bench.sh - https://github.com/sayem314/serverreview-benchmark
 
 Rafa3d's, blackdotsh's and Hidden Refuge's scripts are licensed under GPLv2 and GPLv3 so this script has a GPLv3 LICENSE in repo.
 
